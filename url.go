@@ -29,6 +29,11 @@ func (o httpURL) Import() (image.Image, error) {
 	if err != nil {
 		return nil, errors.New(errMsg)
 	}
+	defer func() {
+		if resp != nil {
+			resp.Body.Close()
+		}
+	}()
 	reader := resp.Body
 	cType := resp.Header.Get("Content-Type")
 	cType = strings.Replace(cType, "/", ".", -1)
